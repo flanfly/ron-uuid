@@ -7,6 +7,7 @@ use std::sync::atomic::{self, AtomicUsize, ATOMIC_USIZE_INIT};
 use std::time::SystemTime;
 
 use chrono::{DateTime, Datelike, Timelike, Utc};
+use quickcheck::{Arbitrary, Gen};
 
 static UUID_NODE_ID: AtomicUsize = ATOMIC_USIZE_INIT;
 static UUID_SEQUENCE: AtomicUsize = ATOMIC_USIZE_INIT;
@@ -699,6 +700,21 @@ impl fmt::Display for UUID {
     }
 }
 
+impl Arbitrary for UUID {
+    fn arbitrary<G: Gen>(g: &mut G) -> Self {
+        let hi = g.gen::<u64>() & 0xfffffffffffffff;
+        let lo = g.gen::<u64>() & 0xfffffffffffffff;
+
+        match g.gen_range(0, 4) {
+            0 => UUID::Name { name: hi, scope: lo },
+            1 => UUID::Number { value1: hi, value2: lo },
+            2 => UUID::Derived { timestamp: hi, origin: lo },
+            3 => UUID::Event { timestamp: hi, origin: lo },
+            _ => unreachable!(),
+        }
+    }
+}
+
 #[test]
 fn global_name_uuid() {
     let uuid = UUID::Name { name: 824893205576155136, scope: 0 };
@@ -873,5 +889,19 @@ fn parse_all() {
             let uu = UUID::parse(uu, Some((&ctx, &ctx))).unwrap().0;
             assert_eq!(format!("{}", uu), exp);
         }
+    }
+}
+
+quickcheck! {
+    fn parse_roundtrip(uu: UUID) -> bool {
+        let s = format!("{}", uu);
+
+        println!("in: {:?}", uu);
+        println!("in-text: {}", s);
+
+        let uu2 = UUID::from_str(&s);
+        println!("out: {:?}", uu2);
+
+        uu2.unwrap() == uu
     }
 }

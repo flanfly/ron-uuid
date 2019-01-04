@@ -1,6 +1,6 @@
 [package]
 name = "ron-uuid"
-version = "0.2.0"
+version = "0.3.0"
 authors = [ "Marcus Brinkmann <marcus.brinkmann@ruhr-uni-bochum.de>", "Kai Michaelis <seu@p8n.io>" ]
 description = "Replicated Object Notation UUIDs"
 keywords = ["ron", "uuid"]
@@ -11,4 +11,5 @@ repository = "https://github.com/flanfly/ron-uuid"
 documentation = "https://docs.rs/ron-uuid/"
 
 [dependencies]
+quickcheck = "0.6"
 chrono = "0.4"

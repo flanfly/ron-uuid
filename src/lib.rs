@@ -5,6 +5,8 @@
 #![warn(missing_docs)]
 
 extern crate chrono;
+#[macro_use]
+extern crate quickcheck;
 
 mod uuid;
 pub use uuid::UUID;

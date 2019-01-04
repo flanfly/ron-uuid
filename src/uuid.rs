@@ -56,7 +56,7 @@ enum ParserState {
 /// That leaves 2 bits to make up a 128-bit number. These 2 bits are
 /// always 0 and are provided for backwards compatibility with RFC4122
 /// (variant field).
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum UUID {
     /// Name UUIDs are often used to encode short string atoms, such as types (e.g. `lww`).
     /// The string is read as a Base64-literal to determine the actual (numeric) UUID component.

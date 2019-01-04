@@ -12,7 +12,7 @@ Usage
 ```toml
 # Cargo.toml
 [dependencies]
-ron-uuid = "0.3.0"
+ron-uuid = "0.3.1"
 ```
 
 License
